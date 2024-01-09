@@ -6,6 +6,8 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+import {valueToLabel} from './utils';
+
 let overlay: any;
 let overlayContent: HTMLElement;
 
@@ -60,7 +62,7 @@ export const findComponentAndHost =
 
 // Todo(aleksanderbodurri): this should not be part of the highlighter, move this somewhere else
 export function getDirectiveName(dir: Type<unknown>|undefined|null): string {
-  return dir ? dir.constructor.name : 'unknown';
+  return dir ? valueToLabel(dir.constructor.name) : 'unknown';
 }
 
 export function highlight(el: HTMLElement): void {

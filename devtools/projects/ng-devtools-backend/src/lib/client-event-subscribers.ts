@@ -18,7 +18,7 @@ import {start as startProfiling, stop as stopProfiling} from './hooks/capture';
 import {ComponentTreeNode} from './interfaces';
 import {setConsoleReference} from './set-console-reference';
 import {serializeDirectiveState} from './state-serializer/state-serializer';
-import {runOutsideAngular} from './utils';
+import {runOutsideAngular, stripUnderscore} from './utils';
 
 export const subscribeToClientEvents = (messageBus: MessageBus<Events>): void => {
   messageBus.on('shutdown', shutdownCallback(messageBus));
@@ -229,7 +229,7 @@ const prepareForestForSerialization = (roots: ComponentTreeNode[], includeResolu
                                       null,
           directives: node.directives.map(
               (d) => ({
-                name: d.name,
+                name: stripUnderscore(d.name),
                 id: initializeOrGetDirectiveForestHooks().getDirectiveId(d.instance),
               })),
           children: prepareForestForSerialization(node.children, includeResolutionPath),

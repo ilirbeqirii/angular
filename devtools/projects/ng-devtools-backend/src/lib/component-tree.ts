@@ -21,7 +21,8 @@ enum ChangeDetectionStrategy {
 }
 
 import {ComponentTreeNode, DirectiveInstanceType, ComponentInstanceType} from './interfaces';
-import type {ClassProvider, ExistingProvider, FactoryProvider, InjectionToken, Injector, Type, ValueProvider,} from '@angular/core';
+import type {ClassProvider, ExistingProvider, FactoryProvider, Injector, ValueProvider,} from '@angular/core';
+import {stripUnderscore, valueToLabel, isInjectionToken} from './utils';
 
 const ngDebug = () => (window as any).ng;
 export const injectorToId = new WeakMap<Injector|HTMLElement, string>();
@@ -321,30 +322,6 @@ const getDependenciesForDirective = (
   return serializedInjectedServices;
 };
 
-export const valueToLabel = (value: any): string => {
-  if (isInjectionToken(value)) {
-    return `InjectionToken(${value['_desc']})`;
-  }
-
-  if (typeof value === 'object') {
-    return stripUnderscore(value.constructor.name);
-  }
-
-  if (typeof value === 'function') {
-    return stripUnderscore(value.name);
-  }
-
-  return stripUnderscore(value);
-};
-
-function stripUnderscore(str: string): string {
-  if (str.startsWith('_')) {
-    return str.slice(1);
-  }
-
-  return str;
-}
-
 export function serializeInjector(injector: Injector): Omit<SerializedInjector, 'id'>|null {
   const metadata = getInjectorMetadata(injector);
 
@@ -444,9 +421,7 @@ export function getElementInjectorElement(elementInjector: Injector): HTMLElemen
   return getInjectorMetadata(elementInjector)!.source as HTMLElement;
 }
 
-export function isInjectionToken(token: Type<unknown>|InjectionToken<unknown>): boolean {
-  return token.constructor.name === 'InjectionToken';
-}
+
 
 export function isEnvironmentInjector(injector: Injector) {
   const metadata = getInjectorMetadata(injector);

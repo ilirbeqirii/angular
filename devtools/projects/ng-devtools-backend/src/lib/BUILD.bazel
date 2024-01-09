@@ -39,6 +39,9 @@ ts_test_library(
 ts_library(
     name = "highlighter",
     srcs = ["highlighter.ts"],
+    deps = [
+        ":utils"
+    ]
 )
 
 ts_library(
@@ -92,6 +95,9 @@ ts_library(
 ts_library(
     name = "utils",
     srcs = ["utils.ts"],
+    deps = [
+        "//packages/core"
+    ]
 )
 
 ts_library(
@@ -126,5 +132,6 @@ ts_library(
         "//devtools/projects/ng-devtools-backend/src/lib/state-serializer",
         "//devtools/projects/protocol",
         "//packages/core",
+        ":utils"
     ],
 )
